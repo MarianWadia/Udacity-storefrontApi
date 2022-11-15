@@ -43,7 +43,7 @@ const addProduct = async (req:Request, res:Response) => {
     try {
         const newOrderProduct: Cart = {
             order_quantity: req.body.order_quantity,
-            order_id: parseInt(req.params.order_id),
+            order_id: parseInt(req.body.order_id),
             product_id: req.body.product_id
         }
         const editedOrder:Cart = await store.addProduct(newOrderProduct);
@@ -57,7 +57,7 @@ const orderRoutes = (app: express.Application): void => {
     app.get('/orders', index);
     app.get('/orders/:id', show);
     app.post('/orders', create);
-    app.post('/orders/:id/newproducts', addProduct)
+    app.post('/orders/newproducts', addProduct)
 }
     
 export default orderRoutes;

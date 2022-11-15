@@ -18,6 +18,9 @@ These are the notes from a meeting with the frontend developer that describe wha
 - Authenticate ----->  '/users/authenticate' [POST] (body: email, password)
 
 #### Orders
+- Create ----->   '/orders/' [POST] (body: user_id, order_status)
+- Show ----->   '/orders/:id' [GET] (parameters: order_id) [token required]
+- AddProduct ----->   '/orders/newproducts' [POST] (body: order_id, user_id, order_status)
 - Current Order by user (args: user id) -----> '/orders/showactive/:id' (parameters: user_id) [GET] [token required]
 - [OPTIONAL] Completed Orders by user (args: user id) -----> '/orders/showcompleted/:id' (parameters: user_id) [GET] [token required]
 

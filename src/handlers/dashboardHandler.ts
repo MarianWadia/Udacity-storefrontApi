@@ -74,8 +74,8 @@ const showCompleted = async (req:Request, res:Response) => {
 const dashboardRoutes = (app: express.Application): void => {
     app.get('/products/products-by-category/:category', indexOfCategory);
     app.get('/products/top-five-popular', topFivePopular);
-    app.get('/orders/showactive/:id', showActive);
-    app.get('/orders/showcompleted/:id', showCompleted);    
+    app.get('/orders/:id/showactive', showActive);
+    app.get('/orders/:id/showcompleted', showCompleted);    
 }
     
 export default dashboardRoutes;
