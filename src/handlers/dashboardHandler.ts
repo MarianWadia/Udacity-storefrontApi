@@ -10,6 +10,15 @@ const store = new DashboardQueriesStore();
 
 const indexOfCategory = async (req:Request, res:Response) => {
     try {
+        const authorizationHeader = req.headers.authorization
+        const token = authorizationHeader?.split(' ')[1];
+        jwt.verify(token as string, process.env.SECRET_TOKEN as unknown as string);
+    } catch (error) {
+        res.status(401);
+        res.json("Access denied Invalid token")
+        return
+    }
+    try {
         const category :string = req.params.category; 
         const products: Product[] = await store.indexOfCategory(category);
         res.json(products);
@@ -20,6 +29,15 @@ const indexOfCategory = async (req:Request, res:Response) => {
 }
 
 const topFivePopular = async (req:Request, res:Response) => {
+    try {
+        const authorizationHeader = req.headers.authorization
+        const token = authorizationHeader?.split(' ')[1];
+        jwt.verify(token as string, process.env.SECRET_TOKEN as unknown as string);
+    } catch (error) {
+        res.status(401);
+        res.json("Access denied Invalid token")
+        return
+    }
     try {
         const popularProducts = await store.topFivePopular();
         res.json(popularProducts);
@@ -74,8 +92,8 @@ const showCompleted = async (req:Request, res:Response) => {
 const dashboardRoutes = (app: express.Application): void => {
     app.get('/products/products-by-category/:category', indexOfCategory);
     app.get('/products/top-five-popular', topFivePopular);
-    app.get('/orders/:id/showactive', showActive);
-    app.get('/orders/:id/showcompleted', showCompleted);    
+    app.get('/orders/showactive/:id', showActive);
+    app.get('/orders/showcompleted/:id', showCompleted);    
 }
     
 export default dashboardRoutes;

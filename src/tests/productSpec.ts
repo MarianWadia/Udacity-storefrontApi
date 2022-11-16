@@ -9,7 +9,7 @@ export const createdItem: Product = {
   category: "drinks",
 };
 
-const item: Product = {
+export const item: Product = {
   product_name: "cola",
   price: 80,
   category: "drinks",

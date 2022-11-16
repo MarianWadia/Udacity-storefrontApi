@@ -8,7 +8,7 @@ import orderRoutes from "./handlers/orderHandler";
 import dashboardRoutes from "./handlers/dashboardHandler";
 
 
-const app: express.Application = express();
+export const app: express.Application = express();
 const address = "0.0.0.0:5000";
 
 const corsOptions = {

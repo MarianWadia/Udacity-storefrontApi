@@ -12,7 +12,7 @@ export const createdUser: User = {
 }
 
 
-const userEntry: User = {
+export const userEntry: User = {
   first_name: "marianne",
   last_name: "Israel",
   email: "marianne@gmail.com",
