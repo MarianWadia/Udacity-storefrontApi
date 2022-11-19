@@ -1,22 +1,10 @@
 import express, {Response, Request} from 'express';
 import { Order, OrderStore, Cart} from '../models/orders';
-import jwt from "jsonwebtoken"
-import dotenv from "dotenv"
-
-dotenv.config()
+import verifyToken from "../middlewares/verifyToken"
 
 const store = new OrderStore();
 
 const index = async (req:Request, res:Response) => {
-    try {
-        const authorizationHeader = req.headers.authorization
-        const token = authorizationHeader?.split(' ')[1];
-        jwt.verify(token as string, process.env.SECRET_TOKEN as unknown as string);
-    } catch (error) {
-        res.status(401);
-        res.json("Access denied Invalid token")
-        return
-    }
     try {
         const orders:Order[] = await store.index();
         res.json(orders);
@@ -27,15 +15,6 @@ const index = async (req:Request, res:Response) => {
 }
 
 const show = async (req:Request, res:Response) => {
-    try {
-        const authorizationHeader = req.headers.authorization
-        const token = authorizationHeader?.split(' ')[1];
-        jwt.verify(token as string, process.env.SECRET_TOKEN as unknown as string);
-    } catch (error) {
-        res.status(401);
-        res.json("Access denied Invalid token")
-        return
-    }
     try {
         const orderId = parseInt(req.params.id);
         const order:Order = await store.show(orderId);
@@ -48,15 +27,6 @@ const show = async (req:Request, res:Response) => {
 }
 
 const create = async (req:Request, res:Response) => {
-    try {
-        const authorizationHeader = req.headers.authorization
-        const token = authorizationHeader?.split(' ')[1];
-        jwt.verify(token as string, process.env.SECRET_TOKEN as unknown as string);
-    } catch (error) {
-        res.status(401);
-        res.json("Access denied Invalid token")
-        return
-    }
     try {
         const newOrder:Order = {
             user_id: req.body.user_id,
@@ -72,15 +42,6 @@ const create = async (req:Request, res:Response) => {
 
 const addProduct = async (req:Request, res:Response) => {
     try {
-        const authorizationHeader = req.headers.authorization
-        const token = authorizationHeader?.split(' ')[1];
-        jwt.verify(token as string, process.env.SECRET_TOKEN as unknown as string);
-    } catch (error) {
-        res.status(401);
-        res.json("Access denied Invalid token")
-        return
-    }
-    try {
         const newOrderProduct: Cart = {
             order_quantity: req.body.order_quantity,
             order_id: parseInt(req.body.order_id),
@@ -94,10 +55,10 @@ const addProduct = async (req:Request, res:Response) => {
     }
 }
 const orderRoutes = (app: express.Application): void => {
-    app.get('/orders', index);
-    app.get('/orders/:id', show);
-    app.post('/orders', create);
-    app.post('/orders/newproducts', addProduct)
+    app.get('/orders', verifyToken, index);
+    app.get('/orders/:id',verifyToken, show);
+    app.post('/orders',verifyToken, create);
+    app.post('/orders/newproducts', verifyToken, addProduct)
 }
     
 export default orderRoutes;

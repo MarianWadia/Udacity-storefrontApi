@@ -1,22 +1,12 @@
-import express, {Response, Request} from 'express';
+import express, { Response, Request} from 'express';
 import { DashboardQueriesStore} from '../models/dashboardQueries';
 import { Product } from '../models/products';
-import jwt from "jsonwebtoken"
-import dotenv from "dotenv"
+import verifyToken from "../middlewares/verifyToken"
 
-dotenv.config();
+
 const store = new DashboardQueriesStore();
 
 const indexOfCategory = async (req:Request, res:Response) => {
-    try {
-        const authorizationHeader = req.headers.authorization
-        const token = authorizationHeader?.split(' ')[1];
-        jwt.verify(token as string, process.env.SECRET_TOKEN as unknown as string);
-    } catch (error) {
-        res.status(401);
-        res.json("Access denied Invalid token")
-        return
-    }
     try {
         const category :string = req.params.category; 
         const products: Product[] = await store.indexOfCategory(category);
@@ -29,15 +19,6 @@ const indexOfCategory = async (req:Request, res:Response) => {
 
 const topFivePopular = async (req:Request, res:Response) => {
     try {
-        const authorizationHeader = req.headers.authorization
-        const token = authorizationHeader?.split(' ')[1];
-        jwt.verify(token as string, process.env.SECRET_TOKEN as unknown as string);
-    } catch (error) {
-        res.status(401);
-        res.json("Access denied Invalid token")
-        return
-    }
-    try {
         const popularProducts = await store.topFivePopular();
         res.json(popularProducts);
     } catch (error) {
@@ -49,16 +30,6 @@ const topFivePopular = async (req:Request, res:Response) => {
 
 const showActive = async (req:Request, res:Response) => {
     try {
-        const authorizationHeader = req.headers.authorization
-        const token = authorizationHeader?.split(' ')[1];
-        jwt.verify(token as string, process.env.SECRET_TOKEN as unknown as string);
-    } catch (error) {
-        res.status(401);
-        res.json("Access denied Invalid token")
-        return
-    }
-
-    try {
         const user_id = parseInt(req.params.user_id);
         const orders = await store.showActive(user_id);
         res.json(orders);
@@ -68,16 +39,6 @@ const showActive = async (req:Request, res:Response) => {
     }
 }
 const showCompleted = async (req:Request, res:Response) => {
-    try {
-        const authorizationHeader = req.headers.authorization
-        const token = authorizationHeader?.split(' ')[1];
-        jwt.verify(token as string, process.env.SECRET_TOKEN as unknown as string);
-    } catch (error) {
-        res.status(401);
-        res.json("Access denied Invalid token")
-        return
-    }
-
     try {
         const user_id = parseInt(req.body.user_id);
         const orders = await store.showCompleted(user_id);
@@ -90,10 +51,10 @@ const showCompleted = async (req:Request, res:Response) => {
 }
 
 const dashboardRoutes = (app: express.Application): void => {
-    app.get('/products/products-by-category/:category', indexOfCategory);
-    app.get('/products/top-five-popular', topFivePopular);
-    app.get('/orders/showactive/:id', showActive);
-    app.get('/orders/showcompleted/:id', showCompleted);    
+    app.get('/products/products-by-category/:category',verifyToken, indexOfCategory);
+    app.get('/products/top-five-popular',verifyToken, topFivePopular);
+    app.get('/orders/showactive/:id', verifyToken, showActive);
+    app.get('/orders/showcompleted/:id', verifyToken, showCompleted);    
 }
     
 export default dashboardRoutes;
