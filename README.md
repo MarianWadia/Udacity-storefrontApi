@@ -6,7 +6,7 @@ This repo contains Storefront Backend API. To get started, clone this repo and r
 
 ## Required Technologies
 - You have to add a .env file in the repo, and it has to contain the following variables and its values:
-DATABASE_NAME=store_db
+`DATABASE_NAME=store_db
 USER_NAME=MARIAN
 DB_PASSWORD=password123
 DB_HOST=127.0.0.1
@@ -17,7 +17,7 @@ USER_NAME_TEST=test_user
 ENV=dev
 SALT_ROUNDS=10
 PEPPER=your-secret-password
-SECRET_TOKEN= your-secret-token
+SECRET_TOKEN= your-secret-token`
 
 - You should have two databases created with the names found in the values set in DATABASE_NAME, DB_NAME_TEST variables in the .env file, SQL command for creating database and user and connecting them, maybe like that: `
 CREATE USER newuser WITH PASSWORD 'password123';    

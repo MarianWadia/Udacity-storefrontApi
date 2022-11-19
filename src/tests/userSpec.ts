@@ -1,6 +1,5 @@
 import { UserStore, User } from "../models/users";
 
-
 const store = new UserStore();
 
 export const createdUser: User = {
@@ -9,14 +8,13 @@ export const createdUser: User = {
   last_name: "Israel",
   email: "marianne@gmail.com",
   password: "sdmcksmcsodmcsoc2323ekwe-=12w",
-}
-
+};
 
 export const userEntry: User = {
   first_name: "marianne",
   last_name: "Israel",
   email: "marianne@gmail.com",
-  password: "sdmcksmcsodmcsoc2323ekwe-=12w"
+  password: "sdmcksmcsodmcsoc2323ekwe-=12w",
 };
 
 describe("testing for user model methods if defined", () => {
@@ -43,7 +41,7 @@ describe("testing for user model methods results", () => {
     expect(result[0].user_id).toEqual(1);
     expect(result[0].first_name).toEqual(userEntry.first_name);
     expect(result[0].last_name).toEqual(userEntry.last_name);
-    expect(result[0].email).toEqual(userEntry.email);;
+    expect(result[0].email).toEqual(userEntry.email);
   });
   it("tests if show method return specified user of provided id", async () => {
     const result = await store.show(1);
@@ -53,10 +51,13 @@ describe("testing for user model methods results", () => {
     expect(result.email).toEqual(userEntry.email);
   });
   it("tests if show method return specified user of provided id", async () => {
-    const result = await store.authenticate(userEntry.email, userEntry.password);
-      expect((result as User).user_id).toEqual(1);
-      expect((result as User).first_name).toEqual(userEntry.first_name);
-      expect((result as User).last_name).toEqual(userEntry.last_name);
-      expect((result as User).email).toEqual(userEntry.email);
+    const result = await store.authenticate(
+      userEntry.email,
+      userEntry.password
+    );
+    expect((result as User).user_id).toEqual(1);
+    expect((result as User).first_name).toEqual(userEntry.first_name);
+    expect((result as User).last_name).toEqual(userEntry.last_name);
+    expect((result as User).email).toEqual(userEntry.email);
   });
 });

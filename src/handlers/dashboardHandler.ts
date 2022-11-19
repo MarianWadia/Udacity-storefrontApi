@@ -1,7 +1,6 @@
 import express, {Response, Request} from 'express';
 import { DashboardQueriesStore} from '../models/dashboardQueries';
 import { Product } from '../models/products';
-import { Order } from '../models/orders';
 import jwt from "jsonwebtoken"
 import dotenv from "dotenv"
 
@@ -61,7 +60,7 @@ const showActive = async (req:Request, res:Response) => {
 
     try {
         const user_id = parseInt(req.params.user_id);
-        const orders:Order[] = await store.showActive(user_id);
+        const orders = await store.showActive(user_id);
         res.json(orders);
     } catch (error) {
         res.status(400)
@@ -80,8 +79,9 @@ const showCompleted = async (req:Request, res:Response) => {
     }
 
     try {
-        const user_id = parseInt(req.params.user_id);
-        const orders:Order[] = await store.showCompleted(user_id);
+        const user_id = parseInt(req.body.user_id);
+        const orders = await store.showCompleted(user_id);
+        console.log(orders);
         res.json(orders);
     } catch (error) {
         res.status(400)

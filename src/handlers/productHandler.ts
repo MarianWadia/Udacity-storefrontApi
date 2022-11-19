@@ -17,7 +17,6 @@ const index = async (_req:Request, res:Response) => {
     }
 
 }
-
 const show = async (req:Request, res:Response) => {
     try {
         const productId = parseInt(req.params.id);
